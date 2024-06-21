@@ -1,8 +1,11 @@
 import { spawn } from "child_process";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-type RegisterFormData = {
+import { useMutation } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
+import * as apiClient from "../../api/api_client";
+import { useAppContext } from "../../Context/AppContext";
+export type RegisterFormData = {
   firstName: string;
   lastName: string;
   email: string;
@@ -10,6 +13,8 @@ type RegisterFormData = {
   confirmPassword: string;
 };
 const Register = () => {
+  const navigate = useNavigate();
+  const { showToast } = useAppContext();
   const {
     register,
     handleSubmit,
@@ -17,8 +22,18 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormData>();
 
+  const mutation = useMutation(apiClient.register, {
+    onSuccess: (data) => {
+      showToast({ message: data.msg, type: "SUCCESS" });
+      navigate("/");
+    },
+    onError: (err: any) => {
+      showToast({ message: err.message, type: "ERROR" });
+    },
+  });
+
   const onSubmit = handleSubmit((data) => {
-    console.log({ data });
+    mutation.mutate(data);
   });
   return (
     <form className=" flex flex-col gap-5 " onSubmit={onSubmit}>
