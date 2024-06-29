@@ -1,19 +1,21 @@
 import React from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { logout } from "../../api/api_client";
 import { useAppContext } from "../../Context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 const SignOutButton = () => {
+  const queryClient = useQueryClient();
   const { showToast } = useAppContext();
   const navigate = useNavigate();
   const mutation = useMutation(logout, {
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries("validateToken");
       showToast({
         message: data.msg,
         type: "SUCCESS",
       });
-      navigate("/login");
+      navigate("/");
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });
