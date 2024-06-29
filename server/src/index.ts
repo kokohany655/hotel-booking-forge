@@ -5,9 +5,13 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth";
+import path from "path";
+
+const envFile = process.env.ENV_FILE || ".env";
 
 const app = express();
-dotenv.config();
+
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 app.use(cookieParser());
 app.use(express.json());
