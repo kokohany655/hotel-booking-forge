@@ -59,8 +59,23 @@ export const login = async (req: Request, res: Response) => {
         secure: process.env.NODE_ENV === "production",
         maxAge: 68400000,
       })
-      .json({ msg: "success", data: user });
+      .json({ msg: "login successfully", data: user });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
+};
+
+export const validateToken = async (req: Request, res: Response) => {
+  try {
+    res.status(200).json({ userId: req.userId });
+  } catch (error) {
+    res.status(500).json({ msg: "Something went wrong" });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  res
+    .cookie("token", "", { expires: new Date(0) })
+    .status(200)
+    .json({ msg: "logout successfully" });
 };

@@ -113,7 +113,7 @@ const Register = () => {
       </label>
       <div className=" w-full flex justify-between items-center">
         <Link to="/login" className=" text-gray-700 font-bold opacity-80">
-          Already have an account? login
+          Already have an account ? login
         </Link>
         <button
           type="submit"

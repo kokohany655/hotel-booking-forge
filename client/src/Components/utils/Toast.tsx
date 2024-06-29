@@ -8,9 +8,13 @@ type ToastProps = {
 
 const Toast = ({ message, type, onClose }: ToastProps) => {
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       onClose();
     }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [onClose]);
 
   let style =
