@@ -50,3 +50,18 @@ export const logout = async () => {
     throw new Error(error.response?.data?.msg || "An error occurred");
   }
 };
+
+export const addHotel = async (hotelFormData: FormData) => {
+  try {
+    console.log({ hotelFormData: hotelFormData.getAll("facilities") });
+    const response = await baseUrl.post("/api/v1/hotel", hotelFormData, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.msg || "An error occurred");
+  }
+};
